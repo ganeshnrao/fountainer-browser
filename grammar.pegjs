@@ -128,6 +128,7 @@ titleValueMultiline
 titlePage
   = tokens:titleKeyValue+ { return node('title-page', { tokens }) }
 
+// TODO: working on transitions
 transition
   = ws* '>' ws* tokens:content end { return node('transition-right', { tokens }) }
   // / ws* tokens:((!(eol / ':') content)+ ':') eol? { return { type: 'transition-right', tokens: flatten(tokens) } }

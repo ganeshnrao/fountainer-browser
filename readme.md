@@ -3,30 +3,25 @@
 Render Fountain script as HTML.
 
 ## Installation
-To install this package use the following command.
+You have the following two options:
+### Option 1: Install via `npm`
+You can either install the package as follows.
 ```bash
 npm install fountainer-browser --save
 ```
-
-## Usage
-Embed the fountainer bundle file in your HTML body using the script tag
+then in you HTML, you can embed the file as:
 ```html
 <script src="../node_modules/fountainer-browser/dist.js"></script>
 ```
-Place your script in any element
+
+### Option 2: Load file from CDN
+You can directly load the bundle file from CDN as follows.
 ```html
-<div id="myscript">
-  your fountain script here
-</div>
+<script src="//cdn.jsdelivr.net/npm/fountainer-browser@latest/dist/bundle.js"></script>
 ```
-Then call the `fountainer` method and pass it a reference to the element containing the fountain script.
-```html
-<script>
-  (function () {
-    fountainer(document.getElementById('myscript'))
-  })()
-</script>
-```
+
+## Usage
+Embed the fountainer bundle file in your HTML body using the script tag as shown above. Then you can place your fountain script directly withn an element. Then call the `fountainer` method and pass the reference to the element containing the fountain script.
 
 ### Simple Usage Example
 ```html
@@ -55,7 +50,7 @@ Uh oh!
 NEW ROBOT
 You should be deprecated.
   </div>
-  <script src="../node_modules/fountainer-browser/dist/bundle.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fountainer-browser@latest/dist/bundle.js"></script>
   <script>
     (function(){
       fountainer(
@@ -67,6 +62,45 @@ You should be deprecated.
 </body>
 </html>
 ```
+
+### Advanced Usage Example
+The example below uses [jQuery](https://api.jquery.com/jquery.get/) to fetch the fountain file via an HTTP request, however you can use any library to fetch the fountain file content.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello World -- An Example</title>
+</head>
+<body>
+  <div id="hello-world"></div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/fountainer-browser@latest/dist/bundle.js"></script>
+  <script>
+    $(document).ready(function() {
+      $.get('/hello-world.fountain', function (data) {
+        fountainer(
+          $('#hello-world')[0],
+          { 
+            fountainString: data,
+            responsive: true,
+            notes: true,
+            styles: {
+              // these will be interpreted as percentages
+              // as we have set `responsive: true` above
+              left: 5,
+              right: 5,
+              transitionLeft: 80,
+            }
+          }
+        )
+      })
+    })
+  </script>
+</body>
+</html>
+```
+
+## API
 
 The `fountainer` method takes two arguments shown below
 ```js
@@ -119,41 +153,4 @@ fountainer(el, settings)
     notesColor: '#AAAAA' // color for the notes (only applicable when `notes` is true)
   }
 }
-```
-
-### Advanced Usage Example
-The example below uses [jQuery](https://api.jquery.com/jquery.get/) to fetch the fountain file via an HTTP request. You can use any other library to fetch the file content.
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Hello World -- An Example</title>
-</head>
-<body>
-  <div id="hello-world"></div>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="../node_modules/fountainer-browser/dist/bundle.js"></script>
-  <script>
-    $(document).ready(function() {
-      $.get('/hello-world.fountain', function (data) {
-        fountainer(
-          $('#hello-world')[0],
-          { 
-            fountainString: data,
-            responsive: true,
-            notes: true,
-            styles: {
-              // these will be interpreted as percentages
-              // as we have set `responsive: true` above
-              left: 5,
-              right: 5,
-              transitionLeft: 80,
-            }
-          }
-        )
-      })
-    })
-  </script>
-</body>
-</html>
 ```

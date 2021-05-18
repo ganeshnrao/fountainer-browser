@@ -1,14 +1,25 @@
 {
-  "name": "starter",
+  "name": "fountainer-browser",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Render fountain files as HTML",
+  "main": "fountainer.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js",
     "start": "NODE_ENV=development webpack serve --config webpack.config.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "fountain",
+    "fountainer",
+    "html",
+    "javascript",
+    "screenplay",
+    "scriptwriting",
+    "film",
+    "movie",
+    "embedding",
+    "api"
+  ],
+  "author": "ganeshnrao@me.com",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.14.3",

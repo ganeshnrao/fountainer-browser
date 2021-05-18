@@ -1,13 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 /*
-| Block | Left Margin | Right Margin | Number of characters per dialogue-line |
-| -- | -- | -- | -- |
-| Action, Scene, Cast list, Shot, Transition-left | 1.5" | 1" | 60 |
-| Character | 3.5" | 1" | 40 |
-| dialogue-paren | 3" | 3.25" | 22 |
-| Dialogue | 2.5" | 2.5" | 35 |
-| Transition-right | 5.5" | 1" | 20 |
+| Block Type                  | Left Margin | Right Margin |
+| ----------------------------| ----------- | ------------ |
+| Action, Scene               | 1.5"        | 1"           |
+| Transition-right            | 5.5"        | 1"           |
+| Character                   | 3.5"        | 1"           |
+| Parenthetical               | 3"          | 3.25"        |
+| Dialogue                    | 2.5"        | 2.5"         |
+| Dual dialogue character     | 2.75" 5.75" | 4.5" 1.25"   |
+| Dual dialogue parenthetical | 2.25" 5.25" | 4.5" 1.25"   |
+| Dual dialogue               | 2" 5"       | 4" 1"        |
 */
 
 :root {
@@ -22,6 +25,15 @@
   --paren-right: 3.25in;
   --dialogue-left: 2.5in;
   --dialogue-right: 2.5in;
+  --dual-left: 2in;
+  --dual-right: 1in;
+  --dual-gutter: 0.25in;
+  --dual-dialogue-left: 2in;
+  --dial-dialogue-right: 1in;
+  --dual-character-left: 0.75in;
+  --dual-character-right: 0.25in;
+  --dual-paren-left: 0.25in;
+  --dual-parent-right: 0.25in;
   --notes-left: 1in;
   --notes-right: 1in;
   --font-family: "Courier Prime", "Courier New", Courier, monospace;
@@ -80,20 +92,7 @@
   margin: 0 var(--right) 0 var(--left);
 }
 
-.fountainer .dual-dialogue .character {
-  margin: 0 0 0 1.25in;
-}
-
-.fountainer .dual-dialogue .dialogue-paren {
-  margin: 0 0 0 0.75in;
-}
-
-.fountainer .dual-dialogue .dialogue-line {
-  margin: 0 0.5in;
-}
-
 .fountainer .action,
-.fountainer .dual-dialogue,
 .fountainer .center,
 .fountainer .shot,
 .fountainer .scene,
@@ -105,19 +104,31 @@
   margin: 0 var(--transition-right) 0 var(--transition-left);
 }
 
-.fountainer .row {
+.fountainer .dual-dialogue {
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
   align-items: flex-start;
-  margin: 0 -0.125in;
+  margin: 0 var(--right) 0 var(--left);
 }
 
-.fountainer .row .dialogue {
+.fountainer .dual-dialogue .dialogue {
   display: block;
   box-sizing: border-box;
   flex: 1 0 0%;
-  padding: 0 0.125in;
+  padding: 0 var(--dual-gutter);
+}
+
+.fountainer .dual-dialogue .character {
+  margin: 0 var(--dual-character-right) 0 var(--dual-character-left);
+}
+
+.fountainer .dual-dialogue .dialogue-paren {
+  margin: 0 var(--dual-parent-right) 0 var(--dual-paren-left);
+}
+
+.fountainer .dual-dialogue .dialogue-line {
+  margin: 0;
 }
 
 .fountainer .section,

@@ -27,7 +27,16 @@ const fixed = {
   dialogueLeft: 2.5,
   dialogueRight: 2.5,
   notesLeft: 1,
-  notesRight: 1
+  notesRight: 1,
+  dualLeft: 2,
+  dualRight: 1,
+  dualGutter: 0.25,
+  dualDialogueLeft: 2,
+  dialDialogueRight: 1,
+  dualCharacterLeft: 0.75,
+  dualCharacterRight: 0.25,
+  dualParenLeft: 0.25,
+  dualParentRight: 0.25
 }
 
 const styles = {
@@ -44,7 +53,6 @@ const styles = {
 }
 
 const defaults = {
-  className: 'fountainer',
   notes: false,
   responsive: false
 }
@@ -71,8 +79,8 @@ function getApplyStyles(settings) {
 }
 
 export default function (el, settings) {
+  const fountainString = get(settings, 'fountainString', el.textContent.trim())
   const applyStyles = getApplyStyles(settings)
-  const fountainString = el.textContent.trim()
   const tokens = parse(fountainString)
   el.innerHTML = render(tokens)
   el.classList.add('fountainer')

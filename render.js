@@ -41,9 +41,6 @@ const renderer = {
   text(token, inner) {
     return preserveLeadingSpaces(inner)
   },
-  ['dual-dialogue'](token, inner) {
-    return renderer.default(token, `<div class="row">${inner}</div>`)
-  },
   extension: { tag: 'span' },
   lane: { class: 'col' },
   synopsis: { class: 'notes' },
@@ -83,5 +80,5 @@ function walk(tokens = [], context = []) {
 }
 
 export default function (tokens) {
-  return walk(tokens, [])
+  return `<div class="script">${walk(tokens, [])}</div>`
 }

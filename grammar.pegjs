@@ -32,7 +32,6 @@
     }
     return flattenDeep(flattenedTokens)
   }
-
 }
 
 start = empty* title:titlePage? body:block* { return [title, ...body] }
@@ -45,9 +44,9 @@ block
   / section
   / synopsis
   / scene
+  / center
   / dualDialogue
   / dialogue
-  / center
   / transition
   / action
 
@@ -64,7 +63,7 @@ boneyard
     { return node('boneyard', { tokens: flatten(tokens) }) }
 
 center
-  = ws* '>' tokens:(!(eol / '<') inline:inline { return inline })+ '<' end
+  = ws* '>' ws* tokens:(!(eol / '<') inline:inline { return inline })+ '<' ws* end
     { return node('center', { tokens: flatten(tokens) }) }
 
 character
@@ -121,7 +120,7 @@ eol
 end = eol / eof
 
 escape
-  = '\\' char:!ws { return `&#${char.charCodeAt(0)};` }
+  = '\\' char:. { return `&#${char.charCodeAt(0)};` }
 
 inline
   = escape

@@ -1,10 +1,80 @@
-import "./style.css";
-import { parse } from "./grammar.pegjs";
+import forOwn from 'lodash/forOwn'
+import get from 'lodash/get'
+import kebabCase from 'lodash/kebabCase'
+import mapValues from 'lodash/mapValues'
+import './style.css'
+import { parse } from './grammar.pegjs'
+import render from './render'
 
-export default function ({ className = "fountainer" } = {}) {
-  Array.from(document.getElementsByClassName(className)).forEach((el) => {
-    const fountainString = el.innerHTML.trim();
-    const tokens = parse(fountainString);
-    el.innerHTML = JSON.stringify(tokens, null, "  ");
-  });
+function toPercent(numerator, denominator = 100) {
+  return `${(numerator / denominator) * 100}%`
+}
+
+function toInches(value) {
+  return `${value}in`
+}
+
+const fixed = {
+  pageWidth: 8.5,
+  left: 1.5,
+  right: 1,
+  transitionLeft: 5.5,
+  transitionRight: 1,
+  characterLeft: 3.5,
+  characterRight: 1,
+  parenLeft: 3,
+  parenRight: 3.25,
+  dialogueLeft: 2.5,
+  dialogueRight: 2.5,
+  notesLeft: 1,
+  notesRight: 1
+}
+
+const styles = {
+  shared: {
+    fontFamily: 'Courier Prime',
+    fontSize: '12pt',
+    lineHeight: '14pt',
+    bgColor: '#FFFFFF',
+    notesColor: '#AAAAA',
+    color: '#333333'
+  },
+  fixed,
+  responsive: mapValues(fixed, (value) => (value / fixed.pageWidth) * 100)
+}
+
+const defaults = {
+  className: 'fountainer',
+  notes: false,
+  responsive: false
+}
+
+function getApplyStyles(settings) {
+  const responsive = get(settings, 'responsive', defaults.responsive)
+  const notes = get(settings, 'notes', defaults.notes)
+  const styleSettings = get(settings, 'styles', {})
+  const defaultStyles = responsive ? styles.responsive : styles.fixed
+  const format = responsive ? toPercent : toInches
+  return function (el) {
+    forOwn(defaultStyles, (defaultValue, property) => {
+      const value = get(styleSettings, property, defaultValue)
+      el.style.setProperty(`--${kebabCase(property)}`, format(value))
+    })
+    forOwn(styles.shared, (defaultValue, property) => {
+      const value = get(styleSettings, property, defaultValue)
+      el.style.setProperty(`--${kebabCase(property)}`, value)
+    })
+    if (notes) {
+      el.style.setProperty('--display-notes', 'block')
+    }
+  }
+}
+
+export default function (el, settings) {
+  const applyStyles = getApplyStyles(settings)
+  const fountainString = el.textContent.trim()
+  const tokens = parse(fountainString)
+  el.innerHTML = render(tokens)
+  el.classList.add('fountainer')
+  applyStyles(el)
 }

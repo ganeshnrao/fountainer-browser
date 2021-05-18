@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <pre class="fountainer">
+  <div id="fountainer">
 Title:	**THE LAST BIRTHDAY CARD**
 Credit:	Written by
 Author:	Stu Maschwitz
@@ -908,8 +908,9 @@ Is this Scott?  Listen I saw your work at Nak's, and...
 > FADE OUT.
 
 >THE END<
-  </pre>
-  <script src="bundle.js"></script>
+  </div>
+  <script src="dist/bundle.js"></script>
+  <script>(() => { fountainer(document.getElementById('fountainer'), { notes: true, responsive: true }) })()</script>
 </body>
 
 </html>

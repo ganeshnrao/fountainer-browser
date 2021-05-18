@@ -1,3 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/*
+| Block | Left Margin | Right Margin | Number of characters per dialogue-line |
+| -- | -- | -- | -- |
+| Action, Scene, Cast list, Shot, Transition-left | 1.5" | 1" | 60 |
+| Character | 3.5" | 1" | 40 |
+| dialogue-paren | 3" | 3.25" | 22 |
+| Dialogue | 2.5" | 2.5" | 35 |
+| Transition-right | 5.5" | 1" | 20 |
+*/
+
 :root {
-  --width: 100px;
+  --page-width: 8.5in;
+  --left: 1.5in;
+  --right: 1in;
+  --transition-left: 5.5in;
+  --transition-right: 1in;
+  --character-left: 3.5in;
+  --character-right: 1in;
+  --paren-left: 3in;
+  --paren-right: 3.25in;
+  --dialogue-left: 2.5in;
+  --dialogue-right: 2.5in;
+  --notes-left: 1in;
+  --notes-right: 1in;
+  --font-family: "Courier Prime", "Courier New", Courier, monospace;
+  --font-size: 12pt;
+  --line-height: 14pt;
+  --notes-color: #aaa;
+  --display-notes: none;
+  --bg-color: #fff;
+  --color: #000;
+}
+
+.fountainer {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  background-color: var(--bg-color);
+  width: var(--page-width);
+  color: var(--color);
+  margin: 0 auto;
+  position: relative;
+}
+
+.fountainer .title-page {
+  text-align: center;
+}
+
+.fountainer .title {
+  margin-bottom: 1em;
+}
+
+.fountainer .contact {
+  margin-top: 1em;
+}
+
+.fountainer .scene {
+  font-weight: bold;
+}
+
+.fountainer .center {
+  text-align: center;
+}
+
+.fountainer .character {
+  margin: 0 var(--character-right) 0 var(--character-left);
+}
+
+.fountainer .dialogue-line {
+  margin: 0 var(--dialogue-right) 0 var(--dialogue-left);
+}
+
+.fountainer .dialogue-paren {
+  margin: 0 var(--paren-right) 0 var(--paren-left);
+}
+
+.fountainer .line {
+  margin: 0 var(--right) 0 var(--left);
+}
+
+.fountainer .dual-dialogue .character {
+  margin: 0 0 0 1.25in;
+}
+
+.fountainer .dual-dialogue .dialogue-paren {
+  margin: 0 0 0 0.75in;
+}
+
+.fountainer .dual-dialogue .dialogue-line {
+  margin: 0 0.5in;
+}
+
+.fountainer .action,
+.fountainer .dual-dialogue,
+.fountainer .center,
+.fountainer .shot,
+.fountainer .scene,
+.fountainer .transition {
+  margin: 0 var(--right) 0 var(--left);
+}
+
+.fountainer .transition-right {
+  margin: 0 var(--transition-right) 0 var(--transition-left);
+}
+
+.fountainer .row {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  align-items: flex-start;
+  margin: 0 -0.125in;
+}
+
+.fountainer .row .dialogue {
+  display: block;
+  box-sizing: border-box;
+  flex: 1 0 0%;
+  padding: 0 0.125in;
+}
+
+.fountainer .section,
+.fountainer .notes {
+  display: var(--display-notes);
+  font-style: italic;
+  color: var(--notes-color);
+  margin: 0 var(--notes-right) 0 var(--notes-left);
+}
+
+.fountainer .section {
+  font-weight: bold;
 }

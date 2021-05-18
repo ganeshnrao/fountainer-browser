@@ -1,39 +1,49 @@
-// const HtmlWebpackPlugin = require("html-webpack-plugin");
-const path = require("path");
+/* eslint-env node */
+
+const path = require('path')
 
 module.exports = {
-  mode: "development",
-  entry: "./index.js",
+  mode: process.env.NODE_ENV,
+  entry: './fountainer.js',
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
     library: {
-      name: "foobar",
-      type: "umd",
-      export: "default",
-    },
+      name: 'fountainer',
+      type: 'umd',
+      export: 'default'
+    }
   },
   module: {
     rules: [
       {
         test: /\.txt$/,
-        use: "raw-loader",
+        use: 'raw-loader'
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.pegjs$/,
-        loader: "pegjs-loader",
-      },
-    ],
+        use: [
+          {
+            loader: path.resolve(__dirname, 'pegjs-loader.js'),
+            options: {
+              transpile: {
+                presets: ['@babel/env']
+              }
+            }
+          }
+        ]
+      }
+    ]
   },
   devServer: {
     contentBase: path.resolve(__dirname),
-    index: "index.html",
+    index: 'index.html',
     hot: true,
     compress: true,
-    port: 9000,
-  },
-};
+    port: 9000
+  }
+}

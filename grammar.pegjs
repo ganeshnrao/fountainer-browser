@@ -44,6 +44,10 @@ block
   / pageBreak
   / section
   / synopsis
+  / scene
+  / dualDialogue
+  / dialogue
+  / center
   / transition
   / action
 
@@ -53,14 +57,56 @@ action
 
 bold
   = '**' tokens:(!'**' token:inline { return token })+ '**'
-    { return node('bold', { tokens: flatten(tokens) }) }
+    { return node('bold', { inline: true, tokens: flatten(tokens) }) }
 
 boneyard
-  = '/*' tokens:(!'*/' (eol / .))+ '*/' end?
+  = '/*' tokens:(!'*/' (eol / .))+ '*/' eol*
     { return node('boneyard', { tokens: flatten(tokens) }) }
+
+center
+  = ws* '>' tokens:(!(eol / '<') inline:inline { return inline })+ '<' end
+    { return node('center', { tokens: flatten(tokens) }) }
+
+character
+  = ws* '@' tokens:content end
+    { return node('character', { tokens }) }
+  / ws* tokens:(!eol ![a-z^] inline:inline { return inline })+ end
+    { return node('character', { tokens: flatten(tokens) }) }
+
+characterCaret
+  = ws* '@' tokens:(!(eol / '^') inline:inline { return inline })+ '^' ws* end
+    { return node('character', { tokens: flatten(tokens) }) }
+  / ws* tokens:(!(eol / [a-z^]) inline:inline { return inline })+ '^' ws* end
+    { return node('character', { tokens: flatten(tokens) }) }
 
 content
   = tokens:inline+ { return flatten(tokens) }
+
+dialogue
+  = character:character lines:dialogueItem+
+    { return node('dialogue', { tokens: flatten([character, ...lines]) }) }
+
+dialogueCaret
+  = character:characterCaret lines:dialogueItem+
+    {
+      const { dual } = character
+      return node('dialogue', { dual, tokens: flatten([character, ...lines]) })
+    }
+
+dualDialogue
+  = first:dialogue empty* second:dialogueCaret
+    { return node('dual-dialogue', { tokens: [first, second] }) }
+
+dialogueItem
+  = dialogueParen / dialogueLine
+
+dialogueLine
+  = ws* tokens:(!eol inline:inline { return inline })+ end
+    { return node('dialogue-line', { tokens: flatten(tokens) }) }
+
+dialogueParen
+  = ws* '(' tokens:(!(eol / ')') inline:inline { return inline })+ ')' ws* end
+    { return node('dialogue-paren', { tokens: flatten(['(', ...tokens, ')']) }) }
 
 empty
   = ws* eol
@@ -88,10 +134,10 @@ inline
 
 italic
   = '*' tokens:(!'*' token:inline { return token })+ '*'
-    { return node('italic', { tokens: flatten(tokens) }) }
+    { return node('italic', { inline: true, tokens: flatten(tokens) }) }
 
 notes
-  = '[[' ws* tokens:(!']]' (eol / .))+ ws* ']]' end?
+  = '[[' ws* tokens:(!']]' (eol / .))+ ws* ']]' eol*
     { return node('notes', { tokens: flatten(tokens) }) }
 
 pageBreak
@@ -102,8 +148,15 @@ plainChar
   = !eol char:.
     { return char }
 
+scene
+  = ws* &scenePrefix tokens:content eol { return node('scene', { tokens: flatten(tokens) }) }
+    / ws* '.' &(!'.') ws* tokens:content eol { return node('scene', { tokens }) }
+
+scenePrefix
+  = 'INT' / 'EXT' / 'EST' / 'INT./EXT' / 'INT/EXT' / 'I/E'
+
 section
-  = ws* level:sectionLevel ws* tokens:content end
+  = ws* level:sectionLevel ws* tokens:content eol*
     { return node('section', { depth: level.length, tokens }) }
 
 sectionLevel
@@ -128,13 +181,17 @@ titleValueMultiline
 titlePage
   = tokens:titleKeyValue+ { return node('title-page', { tokens }) }
 
-// TODO: working on transitions
 transition
-  = ws* '>' ws* tokens:content end { return node('transition-right', { tokens }) }
-  // / ws* tokens:((!(eol / ':') content)+ ':') eol? { return { type: 'transition-right', tokens: flatten(tokens) } }
+  = ws* '>' ws* tokens:content end
+    { return node('transition-right', { tokens }) }
+  / ws* tokens:(!(eol / transitionSuffix) inline:inline { return inline })+ suffix:transitionSuffix end
+    { return node('transition-right', { tokens: flatten([...tokens, ...suffix]) }) }
+
+transitionSuffix
+  = 'TO:' / 'IN:' / 'OUT:'
 
 underline
   = '_' tokens:(!'_' token:inline { return token })+ '_'
-    { return node('underline', { tokens: flatten(tokens) }) }
+    { return node('underline', { inline: true, tokens: flatten(tokens) }) }
 
 ws = ' ' / '\t'

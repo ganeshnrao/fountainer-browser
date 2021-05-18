@@ -2,7 +2,7 @@
   "name": "fountainer-browser",
   "version": "1.0.3",
   "description": "Render fountain files as HTML",
-  "main": "browser.js",
+  "browser": "dist/bundle.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js",
     "build:dev": "NODE_ENV=development webpack --config webpack.config.js",
@@ -22,6 +22,10 @@
   ],
   "author": "ganeshnrao@me.com",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ganeshnrao/fountainer-browser"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",

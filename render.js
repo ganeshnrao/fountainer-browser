@@ -1,15 +1,13 @@
-const skipSet = new Set(['type', 'tokens', 'text', 'class', 'tag', 'inline'])
+import kebabCase from 'lodash/kebabCase'
 
-function kebab(string) {
-  return string.replace(/[A-Z]/g, '-$&').toLowerCase()
-}
+const skipSet = new Set(['type', 'tokens', 'text', 'class', 'tag', 'inline'])
 
 function props(data) {
   return Object.keys(data)
     .reduce((acc, key) => {
       const value = data[key]
       if (!skipSet.has(key) && value !== null && typeof value !== 'undefined') {
-        acc.push(` data-${kebab(key)}="${value}"`)
+        acc.push(` data-${kebabCase(key)}="${value}"`)
       }
       return acc
     }, [])
@@ -46,7 +44,7 @@ const renderer = {
   synopsis: { class: 'notes' },
   default(token, inner) {
     const { type, tag = 'div', text } = token
-    const cssClass = token.class || kebab(type)
+    const cssClass = token.class || kebabCase(type)
     const innerHtml = text || inner
     return ` <${tag} class="${cssClass}"${props(token)}>${innerHtml}</${tag}>`
   }

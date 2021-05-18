@@ -6,10 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Example</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="brick-and-steel">
+  <div id="brick-and-steel" class="hidden">
 Title:
   _**BRICK & STEEL**_
   _**FULL RETIRED**_
@@ -174,7 +179,9 @@ Beer flies.
   <script src="dist/bundle.js"></script>
   <script>
     (function () {
-      fountainer(document.getElementById('brick-and-steel'))
+      const el = document.getElementById('brick-and-steel')
+      fountainer(el)
+      el.classList.remove('hidden')
     })()
   </script>
 </body>

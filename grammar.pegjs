@@ -120,7 +120,7 @@ eol
 end = eol / eof
 
 escape
-  = '\\' char:. { return `&#${char.charCodeAt(0)};` }
+  = '\\' char:. { return char ? `&#${char.charCodeAt(0)};` : '' }
 
 inline
   = escape

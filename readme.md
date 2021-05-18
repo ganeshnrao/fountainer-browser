@@ -2,6 +2,8 @@
 
 Render Fountain script as HTML.
 
+A CLI version of Fountainer is [available here](https://github.com/ganeshnrao/fountainer)
+
 ## Installation
 You have the following two options:
 ### Option 1: Install via `npm`
